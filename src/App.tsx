@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { StoreProvider } from './context/StoreContext';
 import { Layout } from './components/Layout';
+import { Landing } from './pages/Landing';
+import { Pricing } from './pages/Pricing';
 import { Dashboard } from './pages/Dashboard';
 import { SponsorshipCalculator } from './pages/SponsorshipCalculator';
 import { RevenueProjection } from './pages/RevenueProjection';
@@ -13,7 +15,9 @@ function App() {
     <StoreProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Landing />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/app" element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="rates" element={<SponsorshipCalculator />} />
             <Route path="revenue" element={<RevenueProjection />} />

@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    { "source": "/growth", "destination": "/app/growth", "permanent": false },
+    { "source": "/rates", "destination": "/app/rates", "permanent": false },
+    { "source": "/revenue", "destination": "/app/revenue", "permanent": false },
+    { "source": "/planner", "destination": "/app/planner", "permanent": false },
+    { "source": "/settings", "destination": "/app/settings", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/app", "destination": "/" },

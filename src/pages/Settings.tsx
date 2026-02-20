@@ -11,7 +11,6 @@ import {
   getSubscriptionStatus, 
   clearSubscription,
   openStripePaymentLink,
-  getProToken,
 } from '../utils/pro';
 import type { SubscriptionStatus } from '../utils/pro';
 
@@ -35,8 +34,11 @@ export function Settings() {
   }, []);
 
   const handleOpenBilling = async () => {
-    const token = getProToken();
-    if (!token) return;
+    const token = localStorage.getItem('pro_token');
+    if (!token) {
+      alert('Please sign in to access billing');
+      return;
+    }
     
     try {
       const response = await fetch('/api/stripe/portal', {
@@ -45,7 +47,7 @@ export function Settings() {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ returnUrl: 'https://growthledgerpro.vercel.app/app/settings' }),
+        body: JSON.stringify({ returnUrl: `${window.location.origin}/app/settings` }),
       });
       
       if (!response.ok) {
@@ -56,7 +58,7 @@ export function Settings() {
       
       const data = await response.json();
       if (data.url) {
-        window.open(data.url, '_blank');
+        window.location.href = data.url;
       }
     } catch (e) {
       console.error('Billing error:', e);

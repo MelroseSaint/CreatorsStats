@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -189,6 +189,16 @@ export function Settings() {
               >
                 Upgrade Now <ExternalLink size={14} />
               </button>
+
+              <div className="mt-4 pt-4 border-t border-[#B8952E]/20">
+                <Link
+                  to="/owner"
+                  className="text-sm text-[#B8952E] hover:text-[#A88427] transition-colors inline-flex items-center gap-2"
+                >
+                  Owner unlock key
+                  <span className="w-2 h-2 rounded-full bg-[#D4B65A]" />
+                </Link>
+              </div>
             </div>
           )}
           

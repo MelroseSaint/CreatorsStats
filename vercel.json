@@ -11,5 +11,9 @@
     { "source": "/app", "destination": "/" },
     { "source": "/app/(.*)", "destination": "/" },
     { "source": "/owner", "destination": "/" }
-  ]
+  ],
+  "functions": {
+    "api/**/*.ts": {},
+    "api/**/*.js": {}
+  }
 }

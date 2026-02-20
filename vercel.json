@@ -11,10 +11,5 @@
     { "source": "/app", "destination": "/" },
     { "source": "/app/(.*)", "destination": "/" },
     { "source": "/owner", "destination": "/" }
-  ],
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  }
+  ]
 }

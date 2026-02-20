@@ -73,37 +73,37 @@ export function RevenueProjection() {
                    <p className="text-sm text-[#169A76] mb-1">MONTHLY RECURRING (MRR)</p>
                    <p className="text-4xl font-bold text-[#F3F4F6]">{formatCurrency(projection.total)}</p>
                  </div>
-                 <div className="bg-[#14161C] p-6 rounded-xl border border-[#B8952E]/30">
-                   <p className="text-sm text-[#B8952E] mb-1">ANNUAL RUN RATE (ARR)</p>
-                   <p className="text-4xl font-bold text-[#F3F4F6]">{formatCurrency(projection.arr)}</p>
-                 </div>
-               </div>
+                  <div className="bg-[#14161C] p-6 rounded-xl border border-[#B8952E]/30">
+                    <p className="text-sm text-[#B8952E] mb-1">ANNUAL RUN RATE (ARR)</p>
+                    <p className="text-4xl font-bold text-[#F3F4F6]">{formatCurrency(projection.arr)}</p>
+                  </div>
+                </div>
 
-               <div className="bg-[#14161C] p-6 rounded-xl border border-[#1F222A]">
-                 <h3 className="font-semibold text-[#F3F4F6] mb-6 flex items-center gap-2">
-                   <PieChart size={18} /> Revenue Mix
-                 </h3>
-                 
-                 <div className="space-y-4">
-                   <div>
-                     <div className="flex justify-between text-sm mb-1">
-                       <span className="text-[#8A9099]">Ad Revenue</span>
-                       <span className="text-[#F3F4F6] font-medium">{formatCurrency(projection.ads)}</span>
-                     </div>
-                     <div className="w-full bg-[#1F222A] rounded-full h-2">
-                       <div className="bg-[#169A76] h-2 rounded-full" style={{ width: `${(projection.ads / projection.total) * 100}%` }}></div>
-                     </div>
-                   </div>
+                <div className="bg-[#14161C] p-6 rounded-xl border border-[#1F222A]">
+                  <h3 className="font-semibold text-[#F3F4F6] mb-6 flex items-center gap-2">
+                    <PieChart size={18} /> Revenue Mix
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-[#8A9099]">Ad Revenue</span>
+                        <span className="text-[#F3F4F6] font-medium">{formatCurrency(projection.ads)}</span>
+                      </div>
+                      <div className="w-full bg-[#0B0C10] rounded-full h-2">
+                        <div className="bg-[#169A76] h-2 rounded-full" style={{ width: `${(projection.ads / projection.total) * 100}%` }}></div>
+                      </div>
+                    </div>
 
-                   <div>
-                     <div className="flex justify-between text-sm mb-1">
-                       <span className="text-[#8A9099]">Memberships</span>
-                       <span className="text-[#F3F4F6] font-medium">{formatCurrency(projection.direct)}</span>
-                     </div>
-                     <div className="w-full bg-[#1F222A] rounded-full h-2">
-                       <div className="bg-[#B8952E] h-2 rounded-full" style={{ width: `${(projection.direct / projection.total) * 100}%` }}></div>
-                     </div>
-                   </div>
+                    <div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-[#8A9099]">Memberships</span>
+                        <span className="text-[#F3F4F6] font-medium">{formatCurrency(projection.direct)}</span>
+                      </div>
+                      <div className="w-full bg-[#0B0C10] rounded-full h-2">
+                        <div className="bg-[#B8952E] h-2 rounded-full" style={{ width: `${(projection.direct / projection.total) * 100}%` }}></div>
+                      </div>
+                    </div>
 
                    <div>
                      <div className="flex justify-between text-sm mb-1">

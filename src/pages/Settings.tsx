@@ -11,7 +11,6 @@ import {
   getSubscriptionStatus, 
   clearSubscription,
   openStripePaymentLink,
-  openStripePortal,
 } from '../utils/pro';
 import type { SubscriptionStatus } from '../utils/pro';
 
@@ -25,8 +24,32 @@ export function Settings() {
   const [activating, setActivating] = useState(false);
   const [activatingError, setActivatingError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const [billingUrl, setBillingUrl] = useState('');
   
   const isPro = isProEligible();
+
+  useEffect(() => {
+    const storedBillingUrl = localStorage.getItem('manual_billing_url');
+    if (storedBillingUrl) setBillingUrl(storedBillingUrl);
+  }, []);
+
+  const handleOpenBilling = () => {
+    const url = billingUrl || import.meta.env.VITE_STRIPE_BILLING_URL;
+    if (url) {
+      window.open(url, '_blank');
+    }
+  };
+
+  const handleSaveBillingUrl = () => {
+    if (billingUrl) {
+      localStorage.setItem('manual_billing_url', billingUrl);
+    }
+  };
+
+  const handleClearBillingUrl = () => {
+    setBillingUrl('');
+    localStorage.removeItem('manual_billing_url');
+  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -122,6 +145,18 @@ export function Settings() {
               </select>
             </div>
           </div>
+          <div className="mt-4 pt-4 border-t border-[#1F222A]">
+            <button
+              onClick={() => {
+                if (confirm('Clear all profile info?')) {
+                  updateUser({ name: '', platform: 'youtube' });
+                }
+              }}
+              className="text-sm text-red-500 hover:text-red-400 transition-colors"
+            >
+              Clear Profile
+            </button>
+          </div>
         </div>
 
         {/* Subscription Section */}
@@ -213,19 +248,44 @@ export function Settings() {
           )}
           
           {isPro && (
-            <div className="mt-4 flex items-center gap-3">
-              <button 
-                onClick={openStripePortal}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#14161C] border border-[#1F222A] text-[#F3F4F6] rounded font-medium hover:bg-[#1F222A] transition-colors"
-              >
-                Manage Billing <ExternalLink size={14} />
-              </button>
-              <button
-                onClick={handleCancelSubscription}
-                className="text-sm text-red-500 hover:text-red-400 transition-colors inline-flex items-center gap-1"
-              >
-                Remove from device
-              </button>
+            <div className="mt-4 space-y-4">
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={handleOpenBilling}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#14161C] border border-[#1F222A] text-[#F3F4F6] rounded font-medium hover:bg-[#1F222A] transition-colors"
+                >
+                  Manage Billing <ExternalLink size={14} />
+                </button>
+                <button
+                  onClick={handleCancelSubscription}
+                  className="text-sm text-red-500 hover:text-red-400 transition-colors inline-flex items-center gap-1"
+                >
+                  Remove from device
+                </button>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  placeholder="Manual billing portal URL"
+                  value={billingUrl}
+                  onChange={e => setBillingUrl(e.target.value)}
+                  className="flex-1 h-10 rounded-md border border-[#1F222A] bg-[#0B0C10] px-3 text-sm text-[#F3F4F6] placeholder:text-[#5F646C] outline-none focus:ring-2 focus:ring-[#169A76]"
+                />
+                <button
+                  onClick={handleSaveBillingUrl}
+                  className="px-3 py-2 text-sm text-[#8A9099] hover:text-[#F3F4F6] transition-colors"
+                >
+                  Save
+                </button>
+                {billingUrl && (
+                  <button
+                    onClick={handleClearBillingUrl}
+                    className="px-3 py-2 text-sm text-red-500 hover:text-red-400 transition-colors"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>

@@ -35,7 +35,7 @@ export function GrowthTracker() {
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
-           <div className="bg-[#14161C] border border-[#1F222A] rounded-xl p-6 h-[400px]">
+           <div className="bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl p-6 h-[400px]">
              <h3 className="text-lg font-medium text-[#F3F4F6] mb-4">Subscriber Growth</h3>
              {sortedMetrics.length > 1 ? (
                <ResponsiveContainer width="100%" height="100%">
@@ -63,7 +63,7 @@ export function GrowthTracker() {
              )}
            </div>
 
-           <div className="bg-[#14161C] border border-[#1F222A] rounded-xl overflow-hidden">
+           <div className="bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl overflow-hidden">
              <table className="w-full text-sm text-left text-[#8A9099]">
                <thead className="bg-[#0B0C10] text-[#F3F4F6] uppercase font-medium">
                  <tr>
@@ -99,7 +99,7 @@ export function GrowthTracker() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#14161C] p-6 rounded-xl border border-[#1F222A] sticky top-6">
+         <div className="bg-[#14161C] p-6 rounded-xl border border-[#1F222A] hover:border-[#B8952E] sticky top-6">
             <h3 className="font-semibold text-lg text-[#F3F4F6] mb-4">Add Entry</h3>
             <div className="space-y-4">
               <Input 

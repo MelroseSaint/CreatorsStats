@@ -39,7 +39,7 @@ export function RevenueProjection() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-1 space-y-6 bg-[#14161C] p-6 rounded-xl border border-[#1F222A]">
+        <div className="lg:col-span-1 space-y-6 bg-[#14161C] p-6 rounded-xl border border-[#1F222A] hover:border-[#B8952E]">
            <h3 className="font-semibold text-[#F3F4F6]">Input Variables</h3>
            
            <div className="space-y-4">
@@ -69,19 +69,19 @@ export function RevenueProjection() {
            {projection ? (
              <>
                <div className="grid gap-4 md:grid-cols-2">
-                 <div className="bg-[#14161C] p-6 rounded-xl border border-[#169A76]/30">
+                  <div className="bg-[#14161C] p-6 rounded-xl border border-[#169A76]/30 hover:border-[#B8952E]">
                    <p className="text-sm text-[#169A76] mb-1">MONTHLY RECURRING (MRR)</p>
                    <p className="text-4xl font-bold text-[#F3F4F6]">{formatCurrency(projection.total)}</p>
                  </div>
-                  <div className="bg-[#14161C] p-6 rounded-xl border border-[#B8952E]/30">
+                   <div className="bg-[#14161C] p-6 rounded-xl border border-[#B8952E]/30 hover:border-[#B8952E]">
                     <p className="text-sm text-[#B8952E] mb-1">ANNUAL RUN RATE (ARR)</p>
                     <p className="text-4xl font-bold text-[#F3F4F6]">{formatCurrency(projection.arr)}</p>
                   </div>
                 </div>
 
-                <div className="bg-[#14161C] p-6 rounded-xl border border-[#1F222A]">
+                <div className="bg-[#14161C] p-6 rounded-xl border border-[#1F222A] hover:border-[#B8952E]">
                   <h3 className="font-semibold text-[#F3F4F6] mb-6 flex items-center gap-2">
-                    <PieChart size={18} /> Revenue Mix
+                    <PieChart size={18} className="text-[#B8952E]" /> Revenue Mix
                   </h3>
                   
                   <div className="space-y-4">
@@ -118,7 +118,7 @@ export function RevenueProjection() {
                </div>
              </>
            ) : (
-             <div className="h-full flex items-center justify-center bg-[#14161C] rounded-xl border border-dashed border-[#1F222A] text-[#5F646C]">
+              <div className="h-full flex items-center justify-center bg-[#14161C] rounded-xl border border-dashed border-[#1F222A] hover:border-[#B8952E] text-[#5F646C]">
                <div className="text-center">
                   <TrendingUp className="w-12 h-12 mx-auto mb-4 opacity-50" />
                   <p>Enter your metrics to see your forecast</p>

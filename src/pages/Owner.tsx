@@ -27,7 +27,7 @@ export function Owner() {
 
   return (
     <div className="min-h-screen bg-[#0B0C10] flex items-center justify-center">
-      <div className="w-full max-w-sm p-8 bg-[#14161C] border border-[#1F222A] rounded-lg">
+      <div className="w-full max-w-sm p-8 bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-lg">
         <h1 className="text-xl font-semibold text-[#F3F4F6] mb-6">Owner Access</h1>
         
         <input

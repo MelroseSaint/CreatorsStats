@@ -65,7 +65,7 @@ export function Dashboard() {
       {subStatus && (
         <div className={`px-4 py-2 rounded-lg text-sm ${
           subStatus.status === 'ACTIVE' || subStatus.status === 'TRIALING'
-            ? 'bg-[#169A76]/10 border border-[#169A76]/20 text-[#169A76]'
+            ? 'bg-[#14161C] border border-[#B8952E] text-[#B8952E]'
             : 'bg-red-500/10 border border-red-500/20 text-red-500'
         }`}>
           Subscription: {subStatus.status}
@@ -74,7 +74,7 @@ export function Dashboard() {
       )}
 
       {!hasData ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-[#14161C] border border-[#1F222A] rounded-xl">
+        <div className="flex flex-col items-center justify-center py-20 bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl">
           <p className="text-[#8A9099] mb-4">No data yet</p>
           <Link
             to="/growth"
@@ -87,7 +87,7 @@ export function Dashboard() {
       ) : (
         <>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <div className="p-6 bg-[#14161C] border border-[#1F222A] rounded-xl">
+            <div className="p-6 bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl">
               <div className="flex items-center justify-between pb-2">
                 <h3 className="text-sm font-medium text-[#8A9099]">Total Revenue (Mo)</h3>
                 <DollarSign className="h-4 w-4 text-[#169A76]" />
@@ -95,7 +95,7 @@ export function Dashboard() {
               <div className="text-2xl font-bold text-[#F3F4F6]">{formatCurrency(currentRevenue)}</div>
             </div>
 
-            <div className="p-6 bg-[#14161C] border border-[#1F222A] rounded-xl">
+            <div className="p-6 bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl">
               <div className="flex items-center justify-between pb-2">
                 <h3 className="text-sm font-medium text-[#8A9099]">Total Subscribers</h3>
                 <Users className="h-4 w-4 text-[#169A76]" />
@@ -103,7 +103,7 @@ export function Dashboard() {
               <div className="text-2xl font-bold text-[#F3F4F6]">{currentSubs.toLocaleString()}</div>
             </div>
 
-            <div className="p-6 bg-[#14161C] border border-[#1F222A] rounded-xl">
+            <div className="p-6 bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl">
               <div className="flex items-center justify-between pb-2">
                 <h3 className="text-sm font-medium text-[#8A9099]">Active Projects</h3>
                 <Calendar className="h-4 w-4 text-[#B8952E]" />
@@ -111,7 +111,7 @@ export function Dashboard() {
               <div className="text-2xl font-bold text-[#F3F4F6]">{state.projects.filter(p => p.status === 'in-progress').length}</div>
             </div>
             
-            <div className="p-6 bg-[#14161C] border border-[#1F222A] rounded-xl">
+            <div className="p-6 bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl">
               <div className="flex items-center justify-between pb-2">
                 <h3 className="text-sm font-medium text-[#8A9099]">Growth Velocity</h3>
                 <TrendingUp className="h-4 w-4 text-[#B8952E]" />
@@ -121,14 +121,14 @@ export function Dashboard() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <div className="col-span-4 bg-[#14161C] border border-[#1F222A] rounded-xl p-6">
+            <div className="col-span-4 bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl p-6">
                <h3 className="text-lg font-medium text-[#F3F4F6] mb-4">Revenue Overview</h3>
                <div className="h-[200px] flex items-center justify-center text-[#5F646C] border border-dashed border-[#1F222A] rounded-lg">
                  No data yet
                </div>
             </div>
             
-            <div className="col-span-3 bg-[#14161C] border border-[#1F222A] rounded-xl p-6">
+            <div className="col-span-3 bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl p-6">
               <h3 className="text-lg font-medium text-[#F3F4F6] mb-4">Recent Projects</h3>
                <div className="space-y-4">
                  {state.projects.length === 0 ? (

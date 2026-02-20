@@ -99,7 +99,7 @@ export function Settings() {
 
       <div className="space-y-6">
         {/* Profile Section */}
-        <div className="bg-[#14161C] border border-[#1F222A] rounded-xl p-6">
+        <div className="bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl p-6">
           <h3 className="text-lg font-medium text-[#F3F4F6] mb-4">Creator Profile</h3>
           <div className="grid gap-4 md:grid-cols-2">
             <Input 
@@ -125,9 +125,9 @@ export function Settings() {
         </div>
 
         {/* Subscription Section */}
-        <div className="bg-[#14161C] border border-[#1F222A] rounded-xl p-6">
+        <div className="bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl p-6">
           <h3 className="text-lg font-medium text-[#F3F4F6] flex items-center gap-2">
-            <Shield size={18} className={isPro ? "text-[#169A76]" : "text-[#5F646C]"} />
+            <Shield size={18} className="text-[#B8952E]" />
             Subscription Status
           </h3>
 
@@ -158,7 +158,7 @@ export function Settings() {
             <div className="mt-4">
               <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium ${
                 subStatus.status === 'ACTIVE' || subStatus.status === 'TRIALING'
-                  ? 'bg-[#169A76]/10 text-[#169A76] border border-[#169A76]/20'
+                  ? 'bg-[#0B0C10] text-[#B8952E] border border-[#B8952E]'
                   : 'bg-red-500/10 text-red-500 border border-red-500/20'
               }`}>
                 <span className="w-2 h-2 rounded-full bg-current"></span>
@@ -231,7 +231,7 @@ export function Settings() {
         </div>
 
         {/* Data Management Section */}
-        <div className="bg-[#14161C] border border-[#1F222A] rounded-xl p-6">
+        <div className="bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl p-6">
           <h3 className="text-lg font-medium text-[#F3F4F6] mb-4">Data Management</h3>
           <p className="text-sm text-[#8A9099] mb-6">
             Your data is stored locally in your browser. Create a backup to keep it safe.
@@ -239,12 +239,12 @@ export function Settings() {
 
           <div className="flex flex-col md:flex-row gap-4">
             <Button variant="secondary" onClick={exportData} className="flex-1">
-              <Download size={16} className="mr-2" />
+              <Download size={16} className="mr-2 text-[#B8952E]" />
               Export JSON Backup
             </Button>
             
             <Button variant="secondary" onClick={() => fileInputRef.current?.click()} className="flex-1">
-              <Upload size={16} className="mr-2" />
+              <Upload size={16} className="mr-2 text-[#B8952E]" />
               Import Backup
             </Button>
             <input 

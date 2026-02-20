@@ -45,7 +45,7 @@ export function SponsorshipCalculator() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-2">
-        <div className="space-y-4 bg-[#14161C] p-6 rounded-xl border border-[#1F222A]">
+        <div className="space-y-4 bg-[#14161C] p-6 rounded-xl border border-[#1F222A] hover:border-[#B8952E]">
           <h3 className="font-semibold text-lg text-[#F3F4F6] mb-4">Channel Metrics</h3>
           
           <div className="space-y-2">
@@ -92,7 +92,7 @@ export function SponsorshipCalculator() {
         <div className="space-y-6">
            {result ? (
              <div className="space-y-4">
-                <div className="bg-[#14161C] p-6 rounded-xl border border-[#169A76]/30 relative overflow-hidden">
+                <div className="bg-[#14161C] p-6 rounded-xl border border-[#169A76]/30 hover:border-[#B8952E] relative overflow-hidden">
                    <div className="absolute top-0 right-0 p-4 opacity-10">
                      <DollarSign size={100} />
                    </div>
@@ -102,18 +102,18 @@ export function SponsorshipCalculator() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-[#14161C] p-4 rounded-xl border border-[#1F222A]">
+                  <div className="bg-[#14161C] p-4 rounded-xl border border-[#1F222A] hover:border-[#B8952E]">
                     <p className="text-xs text-[#5F646C] mb-1">MINIMUM ACCEPTABLE</p>
                     <p className="text-xl font-bold text-[#8A9099]">{formatCurrency(result.min)}</p>
                   </div>
-                  <div className="bg-[#14161C] p-4 rounded-xl border border-[#1F222A]">
+                  <div className="bg-[#14161C] p-4 rounded-xl border border-[#1F222A] hover:border-[#B8952E]">
                     <p className="text-xs text-[#5F646C] mb-1">REACH / AGGRESSIVE</p>
                     <p className="text-xl font-bold text-[#169A76]">{formatCurrency(result.reach)}</p>
                   </div>
                 </div>
              </div>
            ) : (
-             <div className="h-full flex items-center justify-center bg-[#14161C] rounded-xl border border-dashed border-[#1F222A] p-8 text-center">
+              <div className="h-full flex items-center justify-center bg-[#14161C] rounded-xl border border-dashed border-[#1F222A] hover:border-[#B8952E] p-8 text-center">
                <div>
                  <DollarSign className="w-12 h-12 text-[#1F222A] mx-auto mb-4" />
                  <p className="text-[#5F646C]">Enter your metrics to generate a rate card.</p>

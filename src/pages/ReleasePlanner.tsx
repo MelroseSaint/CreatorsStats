@@ -46,7 +46,7 @@ export function ReleasePlanner() {
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-[#14161C] p-6 rounded-xl border border-[#1F222A]">
+          <div className="bg-[#14161C] p-6 rounded-xl border border-[#1F222A] hover:border-[#B8952E]">
             <h3 className="font-semibold text-lg text-[#F3F4F6] mb-4">New Project</h3>
             <div className="space-y-4">
               <Input 
@@ -84,7 +84,7 @@ export function ReleasePlanner() {
 
         <div className="lg:col-span-2 space-y-6">
           {state.projects.length === 0 ? (
-            <div className="h-64 flex items-center justify-center bg-[#14161C] rounded-xl border border-dashed border-[#1F222A] text-[#5F646C]">
+            <div className="h-64 flex items-center justify-center bg-[#14161C] rounded-xl border border-dashed border-[#1F222A] hover:border-[#B8952E] text-[#5F646C]">
                No active projects. Start planning your next release.
             </div>
           ) : (
@@ -94,7 +94,7 @@ export function ReleasePlanner() {
                 const daysLeft = differenceInDays(parseISO(project.releaseDate), new Date());
                 
                 return (
-                  <div key={project.id} className="bg-[#14161C] border border-[#1F222A] rounded-xl overflow-hidden">
+                  <div key={project.id} className="bg-[#14161C] border border-[#1F222A] hover:border-[#B8952E] rounded-xl overflow-hidden">
                     <div className="p-4 bg-[#0B0C10] border-b border-[#1F222A] flex justify-between items-center">
                       <div className="flex items-center gap-3">
                          <div className={`w-2 h-12 rounded-full ${daysLeft < 0 ? 'bg-red-500' : daysLeft < 7 ? 'bg-[#B8952E]' : 'bg-[#169A76]'}`}></div>

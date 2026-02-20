@@ -50,7 +50,7 @@ export function Sidebar() {
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-[#F3F4F6]">{proEnabled ? 'Pro' : 'Free'}</span>
             {proEnabled ? (
-              <span className="px-1.5 py-0.5 bg-[#169A76]/20 text-[#169A76] text-[10px] font-bold rounded border border-[#169A76]/20">ACTIVE</span>
+              <span className="px-1.5 py-0.5 bg-[#14161C] text-[#B8952E] text-[10px] font-bold rounded border border-[#B8952E]">ACTIVE</span>
             ) : (
               <span className="px-1.5 py-0.5 bg-[#1F222A] text-[#5F646C] text-[10px] font-bold rounded border border-[#1F222A]">FREE</span>
             )}

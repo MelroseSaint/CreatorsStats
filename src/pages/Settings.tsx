@@ -11,6 +11,7 @@ import {
   getSubscriptionStatus, 
   clearSubscription,
   openStripePaymentLink,
+  getProToken,
 } from '../utils/pro';
 import type { SubscriptionStatus } from '../utils/pro';
 
@@ -33,10 +34,33 @@ export function Settings() {
     if (storedBillingUrl) setBillingUrl(storedBillingUrl);
   }, []);
 
-  const handleOpenBilling = () => {
-    const url = billingUrl || import.meta.env.VITE_STRIPE_BILLING_URL;
-    if (url) {
-      window.open(url, '_blank');
+  const handleOpenBilling = async () => {
+    const token = getProToken();
+    if (!token) return;
+    
+    try {
+      const response = await fetch('/api/stripe/portal', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ returnUrl: 'https://growthledgerpro.vercel.app/app/settings' }),
+      });
+      
+      if (!response.ok) {
+        const data = await response.json();
+        alert(data.error || 'Failed to open billing');
+        return;
+      }
+      
+      const data = await response.json();
+      if (data.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (e) {
+      console.error('Billing error:', e);
+      alert('Failed to open billing');
     }
   };
 

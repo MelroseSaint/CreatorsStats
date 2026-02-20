@@ -1,6 +1,5 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Calculator, TrendingUp, Calendar, Target, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Calculator, TrendingUp, Calendar, Target, Settings } from 'lucide-react';
 import { cn } from '../utils';
 
 const navItems = [
@@ -17,8 +16,8 @@ export function Sidebar() {
     <aside className="w-64 bg-gray-900 border-r border-gray-800 flex flex-col h-screen fixed left-0 top-0">
       <div className="p-6">
         <h1 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-          <span className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-mono">C</span>
-          Revenue OS
+          <span className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-mono">G</span>
+          GrowthLedger
         </h1>
       </div>
 

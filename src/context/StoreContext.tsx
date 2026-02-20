@@ -19,7 +19,7 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AppState>(() => {
-    const stored = localStorage.getItem('cros_v1_store');
+    const stored = localStorage.getItem('growthledger_v1_store');
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
@@ -35,7 +35,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   // Auto-save effect
   useEffect(() => {
-    localStorage.setItem('cros_v1_store', JSON.stringify(state));
+    localStorage.setItem('growthledger_v1_store', JSON.stringify(state));
   }, [state]);
 
   const updateUser = (updates: Partial<UserProfile>) => {
@@ -90,7 +90,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", `cros_backup_${new Date().toISOString().split('T')[0]}.json`);
+    downloadAnchorNode.setAttribute("download", `growthledger_backup_${new Date().toISOString().split('T')[0]}.json`);
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();

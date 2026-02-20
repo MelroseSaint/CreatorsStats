@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Plus, Trash2, Calendar as CalendarIcon, CheckCircle2 } from 'lucide-react';
+import { Plus, Trash2, Calendar as CalendarIcon } from 'lucide-react';
 import { addDays, format, differenceInDays, parseISO } from 'date-fns';
-import { Project } from '../types';
+import { type Project } from '../types';
 
 export function ReleasePlanner() {
-  const { state, addProject, deleteProject, updateProject } = useStore();
+  const { state, addProject, deleteProject } = useStore();
   const [newProject, setNewProject] = useState({
     name: '',
     releaseDate: '',

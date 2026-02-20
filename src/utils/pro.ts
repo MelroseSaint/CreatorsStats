@@ -164,14 +164,14 @@ export async function getDetailedStatus(): Promise<SubscriptionStatus | null> {
 }
 
 export function openStripePaymentLink(): void {
-  const url = import.meta.env.VITE_STRIPE_PAYMENT_LINK_URL;
+  const url = import.meta.env.VITE_STRIPE_CHECKOUT_URL;
   if (url) {
     window.open(url, '_blank');
   }
 }
 
 export function openStripePortal(): void {
-  const url = import.meta.env.VITE_STRIPE_PORTAL_LOGIN_URL;
+  const url = import.meta.env.VITE_STRIPE_BILLING_URL;
   if (url) {
     window.open(url, '_blank');
   }

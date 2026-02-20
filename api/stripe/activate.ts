@@ -78,7 +78,7 @@ export default async function handler(req, res) {
       {
         pro: true,
         sub: 'stripe',
-        customerId,
+        stripeCustomerId: customerId,
         subscriptionId,
         deviceId,
         status: subStatus.status,

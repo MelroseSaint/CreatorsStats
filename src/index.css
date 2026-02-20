@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* GrowthLedger Theme */
 @theme {
   --color-background: #0B0C10;
   --color-foreground: #F3F4F6;

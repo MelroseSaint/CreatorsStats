@@ -30,42 +30,42 @@ export function GrowthTracker() {
     <div className="space-y-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Growth Tracker</h2>
-        <p className="text-[#a3a3a3] mt-2">Log your metrics weekly to visualize your trajectory.</p>
+        <p className="text-[#8A9099] mt-2">Log your metrics weekly to visualize your trajectory.</p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
-           <div className="bg-[#171717] border border-[#262626] rounded-xl p-6 h-[400px]">
-             <h3 className="text-lg font-medium text-[#f5f5f5] mb-4">Subscriber Growth</h3>
+           <div className="bg-[#14161C] border border-[#1F222A] rounded-xl p-6 h-[400px]">
+             <h3 className="text-lg font-medium text-[#F3F4F6] mb-4">Subscriber Growth</h3>
              {sortedMetrics.length > 1 ? (
                <ResponsiveContainer width="100%" height="100%">
                  <AreaChart data={sortedMetrics}>
                    <defs>
                      <linearGradient id="colorSubs" x1="0" y1="0" x2="0" y2="1">
-                       <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                       <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                       <stop offset="5%" stopColor="#169A76" stopOpacity={0.3}/>
+                       <stop offset="95%" stopColor="#169A76" stopOpacity={0}/>
                      </linearGradient>
                    </defs>
-                   <CartesianGrid strokeDasharray="3 3" stroke="#262626" />
-                   <XAxis dataKey="date" stroke="#525252" fontSize={12} tickFormatter={(str) => new Date(str).toLocaleDateString(undefined, {month:'short', day:'numeric'})} />
-                   <YAxis stroke="#525252" fontSize={12} />
+                   <CartesianGrid strokeDasharray="3 3" stroke="#1F222A" />
+                   <XAxis dataKey="date" stroke="#5F646C" fontSize={12} tickFormatter={(str) => new Date(str).toLocaleDateString(undefined, {month:'short', day:'numeric'})} />
+                   <YAxis stroke="#5F646C" fontSize={12} />
                    <Tooltip 
-                     contentStyle={{ backgroundColor: '#171717', borderColor: '#262626' }}
-                     itemStyle={{ color: '#f5f5f5' }}
+                     contentStyle={{ backgroundColor: '#14161C', borderColor: '#1F222A' }}
+                     itemStyle={{ color: '#F3F4F6' }}
                    />
-                   <Area type="monotone" dataKey="subs" stroke="#10b981" fillOpacity={1} fill="url(#colorSubs)" />
+                   <Area type="monotone" dataKey="subs" stroke="#169A76" fillOpacity={1} fill="url(#colorSubs)" />
                  </AreaChart>
                </ResponsiveContainer>
              ) : (
-               <div className="h-full flex items-center justify-center text-[#525252] border border-dashed border-[#262626] rounded-lg">
+               <div className="h-full flex items-center justify-center text-[#5F646C] border border-dashed border-[#1F222A] rounded-lg">
                  Add at least 2 data points to see the chart.
                </div>
              )}
            </div>
 
-           <div className="bg-[#171717] border border-[#262626] rounded-xl overflow-hidden">
-             <table className="w-full text-sm text-left text-[#a3a3a3]">
-               <thead className="bg-[#0a0a0a] text-[#f5f5f5] uppercase font-medium">
+           <div className="bg-[#14161C] border border-[#1F222A] rounded-xl overflow-hidden">
+             <table className="w-full text-sm text-left text-[#8A9099]">
+               <thead className="bg-[#0B0C10] text-[#F3F4F6] uppercase font-medium">
                  <tr>
                    <th className="px-6 py-3">Date</th>
                    <th className="px-6 py-3">Subscribers</th>
@@ -76,11 +76,11 @@ export function GrowthTracker() {
                </thead>
                <tbody>
                  {sortedMetrics.map((metric) => (
-                   <tr key={metric.id} className="border-b border-[#262626] hover:bg-[#0a0a0a]">
+                   <tr key={metric.id} className="border-b border-[#1F222A] hover:bg-[#0B0C10]">
                      <td className="px-6 py-4">{metric.date}</td>
-                     <td className="px-6 py-4 text-[#f5f5f5]">{metric.subs.toLocaleString()}</td>
+                     <td className="px-6 py-4 text-[#F3F4F6]">{metric.subs.toLocaleString()}</td>
                      <td className="px-6 py-4">{metric.views.toLocaleString()}</td>
-                     <td className="px-6 py-4 text-[#10b981]">${metric.revenue}</td>
+                     <td className="px-6 py-4 text-[#169A76]">${metric.revenue}</td>
                      <td className="px-6 py-4 text-right">
                        <button onClick={() => deleteMetric(metric.id)} className="text-red-500 hover:text-red-400">
                          <Trash2 size={16} />
@@ -90,7 +90,7 @@ export function GrowthTracker() {
                  ))}
                  {sortedMetrics.length === 0 && (
                    <tr>
-                     <td colSpan={5} className="px-6 py-8 text-center text-[#525252]">No data yet.</td>
+                     <td colSpan={5} className="px-6 py-8 text-center text-[#5F646C]">No data yet.</td>
                    </tr>
                  )}
                </tbody>
@@ -99,8 +99,8 @@ export function GrowthTracker() {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#171717] p-6 rounded-xl border border-[#262626] sticky top-6">
-            <h3 className="font-semibold text-lg text-[#f5f5f5] mb-4">Add Entry</h3>
+          <div className="bg-[#14161C] p-6 rounded-xl border border-[#1F222A] sticky top-6">
+            <h3 className="font-semibold text-lg text-[#F3F4F6] mb-4">Add Entry</h3>
             <div className="space-y-4">
               <Input 
                 label="Date" 

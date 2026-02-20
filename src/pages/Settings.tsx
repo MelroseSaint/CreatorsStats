@@ -69,14 +69,27 @@ export function Settings() {
               </p>
             </div>
             {!state.user.isPro && (
-              <Button onClick={() => window.open('https://buy.stripe.com/test_placeholder', '_blank')}>
+              <a 
+                href="https://buy.stripe.com/test_placeholder" 
+                target="_blank" 
+                rel="noreferrer"
+                className="inline-flex items-center justify-center rounded-md font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2"
+              >
                 Upgrade Now <ExternalLink size={14} className="ml-2" />
-              </Button>
+              </a>
             )}
           </div>
           {state.user.isPro && (
-             <div className="mt-4 pt-4 border-t border-gray-800">
+             <div className="mt-4 pt-4 border-t border-gray-800 flex items-center justify-between">
                <p className="text-xs text-gray-500">License ID: {state.user.isPro ? 'LIFETIME_PRO_ACTIVATED' : 'FREE_TIER'}</p>
+               <a 
+                 href="https://billing.stripe.com/p/login/fZu9AUbkT4SE5Ix3826g800" 
+                 target="_blank" 
+                 rel="noreferrer"
+                 className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+               >
+                 Manage billing →
+               </a>
              </div>
           )}
         </div>

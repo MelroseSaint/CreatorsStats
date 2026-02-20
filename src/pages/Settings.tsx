@@ -1,12 +1,16 @@
 import React, { useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { Button } from '../components/ui/Button';
-import { Download, Upload, Trash2, ShieldCheck, ExternalLink } from 'lucide-react';
+import { Download, Upload, Trash2, Shield, X } from 'lucide-react';
 import { Input } from '../components/ui/Input';
+import { isProEnabled, disablePro } from '../utils/pro';
 
 export function Settings() {
+  const navigate = useNavigate();
   const { state, exportData, importData, resetData, updateUser } = useStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const proEnabled = isProEnabled();
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -20,17 +24,24 @@ export function Settings() {
     }
   };
 
+  const handleDisablePro = () => {
+    if (confirm('Disable Pro on this device?')) {
+      disablePro();
+      navigate('/app');
+    }
+  };
+
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
-        <p className="text-gray-400 mt-2">Manage your data, subscription, and preferences.</p>
+        <p className="text-[#a3a3a3] mt-2">Manage your data and preferences.</p>
       </div>
 
       <div className="space-y-6">
         {/* Profile Section */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h3 className="text-lg font-medium text-white mb-4">Creator Profile</h3>
+        <div className="bg-[#171717] border border-[#262626] rounded-xl p-6">
+          <h3 className="text-lg font-medium text-[#f5f5f5] mb-4">Creator Profile</h3>
           <div className="grid gap-4 md:grid-cols-2">
             <Input 
               label="Display Name" 
@@ -38,9 +49,9 @@ export function Settings() {
               onChange={e => updateUser({ name: e.target.value })} 
             />
             <div className="space-y-1">
-              <label className="text-sm text-gray-400 font-medium">Primary Platform</label>
+              <label className="text-sm text-[#a3a3a3] font-medium">Primary Platform</label>
               <select 
-                className="w-full h-10 rounded-md border border-gray-700 bg-gray-900 px-3 text-sm text-gray-100 outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full h-10 rounded-md border border-[#262626] bg-[#0a0a0a] px-3 text-sm text-[#f5f5f5] outline-none focus:ring-2 focus:ring-[#10b981]"
                 value={state.user.platform}
                 onChange={e => updateUser({ platform: e.target.value as any })}
               >
@@ -55,50 +66,40 @@ export function Settings() {
         </div>
 
         {/* Subscription Section */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 relative overflow-hidden">
-          <div className="flex items-start justify-between relative z-10">
-            <div>
-              <h3 className="text-lg font-medium text-white flex items-center gap-2">
-                Subscription Status
-                {state.user.isPro && <ShieldCheck className="text-green-500" size={18} />}
-              </h3>
-              <p className="text-gray-400 mt-1 text-sm">
-                {state.user.isPro 
-                  ? "You have a lifetime Pro license. Thank you for supporting the development!" 
-                  : "Upgrade to Pro to unlock cloud sync, advanced forecasting, and more."}
-              </p>
-            </div>
-            {!state.user.isPro && (
-              <a 
-                href={import.meta.env.VITE_STRIPE_CHECKOUT_URL || '#'} 
-                target="_blank" 
-                rel="noreferrer"
-                className="inline-flex items-center justify-center rounded-md font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2"
-              >
-                Upgrade Now <ExternalLink size={14} className="ml-2" />
-              </a>
-            )}
-          </div>
-          {state.user.isPro && (
-              <div className="mt-4 pt-4 border-t border-gray-800 flex items-center justify-between">
-                <p className="text-xs text-gray-500">License ID: {state.user.isPro ? 'PRO_MEMBER' : 'FREE_TIER'}</p>
-                <a
-                  href={import.meta.env.VITE_STRIPE_BILLING_URL || '#'} 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                 Manage billing →
-               </a>
-             </div>
+        <div className="bg-[#171717] border border-[#262626] rounded-xl p-6">
+          <h3 className="text-lg font-medium text-[#f5f5f5] flex items-center gap-2">
+            <Shield size={18} className={proEnabled ? "text-[#10b981]" : "text-[#525252]"} />
+            Subscription Status
+          </h3>
+          <p className="text-[#a3a3a3] mt-1 text-sm">
+            {proEnabled 
+              ? "Pro mode is enabled on this device." 
+              : "Free mode. Visit /owner to unlock Pro."}
+          </p>
+          {proEnabled && (
+            <button
+              onClick={handleDisablePro}
+              className="mt-4 text-sm text-red-500 hover:text-red-400 transition-colors flex items-center gap-1"
+            >
+              <X size={14} />
+              Disable Pro on this device
+            </button>
+          )}
+          {!proEnabled && (
+            <Link
+              to="/owner"
+              className="mt-4 inline-block text-sm text-[#d97706] hover:text-[#b45309] transition-colors"
+            >
+              Unlock Pro →
+            </Link>
           )}
         </div>
 
         {/* Data Management Section */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h3 className="text-lg font-medium text-white mb-4">Data Management</h3>
-          <p className="text-sm text-gray-400 mb-6">
-            Your data is stored locally in your browser. Create a backup to keep it safe or transfer it to another device.
+        <div className="bg-[#171717] border border-[#262626] rounded-xl p-6">
+          <h3 className="text-lg font-medium text-[#f5f5f5] mb-4">Data Management</h3>
+          <p className="text-sm text-[#a3a3a3] mb-6">
+            Your data is stored locally in your browser. Create a backup to keep it safe.
           </p>
 
           <div className="flex flex-col md:flex-row gap-4">

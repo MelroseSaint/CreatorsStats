@@ -14,9 +14,9 @@ const NICHES = {
 
 export function SponsorshipCalculator() {
   const [values, setValues] = useState({
-    followers: 10000,
-    avgViews: 5000,
-    engagementRate: 3.5,
+    followers: 0,
+    avgViews: 0,
+    engagementRate: 0,
     niche: 'gaming' as keyof typeof NICHES,
   });
 
@@ -26,14 +26,8 @@ export function SponsorshipCalculator() {
     const { avgViews, engagementRate, niche } = values;
     const cpm = NICHES[niche].cpm;
     
-    // Base Rate calculation
     const baseRate = (avgViews / 1000) * cpm;
-    
-    // Engagement Bonus (weighted)
-    // If engagement is above 3%, add a multiplier
     const engagementMultiplier = engagementRate > 3 ? 1 + ((engagementRate - 3) / 100) : 1;
-    
-    // Total Ask
     const rawAsk = baseRate * engagementMultiplier;
     
     setResult({
@@ -47,17 +41,17 @@ export function SponsorshipCalculator() {
     <div className="max-w-2xl mx-auto space-y-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Sponsorship Rate Calculator</h2>
-        <p className="text-gray-400 mt-2">Calculate your fair market value for brand deals.</p>
+        <p className="text-[#a3a3a3] mt-2">Calculate your fair market value for brand deals.</p>
       </div>
 
       <div className="grid gap-8 md:grid-cols-2">
-        <div className="space-y-4 bg-gray-900 p-6 rounded-xl border border-gray-800">
-          <h3 className="font-semibold text-lg text-white mb-4">Channel Metrics</h3>
+        <div className="space-y-4 bg-[#171717] p-6 rounded-xl border border-[#262626]">
+          <h3 className="font-semibold text-lg text-[#f5f5f5] mb-4">Channel Metrics</h3>
           
           <div className="space-y-2">
-            <label className="text-sm text-gray-400">Niche / Category</label>
+            <label className="text-sm text-[#a3a3a3]">Niche / Category</label>
             <select 
-              className="w-full h-10 rounded-md border border-gray-700 bg-gray-900 px-3 text-sm text-gray-100 focus:ring-2 focus:ring-blue-600 outline-none"
+              className="w-full h-10 rounded-md border border-[#262626] bg-[#0a0a0a] px-3 text-sm text-[#f5f5f5] focus:ring-2 focus:ring-[#10b981] outline-none"
               value={values.niche}
               onChange={(e) => setValues({...values, niche: e.target.value as keyof typeof NICHES})}
             >
@@ -98,37 +92,31 @@ export function SponsorshipCalculator() {
         <div className="space-y-6">
            {result ? (
              <div className="space-y-4">
-                <div className="bg-gray-800/50 p-6 rounded-xl border border-blue-900/50 relative overflow-hidden">
+                <div className="bg-[#171717] p-6 rounded-xl border border-[#10b981]/30 relative overflow-hidden">
                    <div className="absolute top-0 right-0 p-4 opacity-10">
                      <DollarSign size={100} />
                    </div>
-                   <p className="text-sm text-blue-400 font-medium mb-1">TARGET ASKING PRICE</p>
-                   <p className="text-4xl font-bold text-white">{formatCurrency(result.target)}</p>
-                   <p className="text-xs text-gray-500 mt-2">Based on {NICHES[values.niche].cpm} CPM & {values.engagementRate}% Eng.</p>
+                   <p className="text-sm text-[#10b981] font-medium mb-1">TARGET ASKING PRICE</p>
+                   <p className="text-4xl font-bold text-[#f5f5f5]">{formatCurrency(result.target)}</p>
+                   <p className="text-xs text-[#525252] mt-2">Based on {NICHES[values.niche].cpm} CPM & {values.engagementRate}% Eng.</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-900 p-4 rounded-xl border border-gray-800">
-                    <p className="text-xs text-gray-500 mb-1">MINIMUM ACCEPTABLE</p>
-                    <p className="text-xl font-bold text-gray-300">{formatCurrency(result.min)}</p>
+                  <div className="bg-[#171717] p-4 rounded-xl border border-[#262626]">
+                    <p className="text-xs text-[#525252] mb-1">MINIMUM ACCEPTABLE</p>
+                    <p className="text-xl font-bold text-[#a3a3a3]">{formatCurrency(result.min)}</p>
                   </div>
-                  <div className="bg-gray-900 p-4 rounded-xl border border-gray-800">
-                    <p className="text-xs text-gray-500 mb-1">REACH / AGGRESSIVE</p>
-                    <p className="text-xl font-bold text-green-400">{formatCurrency(result.reach)}</p>
+                  <div className="bg-[#171717] p-4 rounded-xl border border-[#262626]">
+                    <p className="text-xs text-[#525252] mb-1">REACH / AGGRESSIVE</p>
+                    <p className="text-xl font-bold text-[#10b981]">{formatCurrency(result.reach)}</p>
                   </div>
-                </div>
-                
-                <div className="p-4 bg-blue-900/10 border border-blue-900/30 rounded-lg">
-                  <p className="text-sm text-blue-200">
-                    <strong>Tip:</strong> Always negotiate usage rights separately. This rate covers the deliverables only.
-                  </p>
                 </div>
              </div>
            ) : (
-             <div className="h-full flex items-center justify-center bg-gray-900/50 rounded-xl border border-dashed border-gray-800 p-8 text-center">
+             <div className="h-full flex items-center justify-center bg-[#171717] rounded-xl border border-dashed border-[#262626] p-8 text-center">
                <div>
-                 <DollarSign className="w-12 h-12 text-gray-700 mx-auto mb-4" />
-                 <p className="text-gray-500">Enter your metrics to generate a rate card.</p>
+                 <DollarSign className="w-12 h-12 text-[#262626] mx-auto mb-4" />
+                 <p className="text-[#525252]">Enter your metrics to generate a rate card.</p>
                </div>
              </div>
            )}

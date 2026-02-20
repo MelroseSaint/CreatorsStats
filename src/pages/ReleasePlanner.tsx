@@ -41,24 +41,24 @@ export function ReleasePlanner() {
     <div className="space-y-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Release Planner</h2>
-        <p className="text-gray-400 mt-2">Work backwards from your drop date to hit every deadline.</p>
+        <p className="text-[#a3a3a3] mt-2">Work backwards from your drop date to hit every deadline.</p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
-            <h3 className="font-semibold text-lg text-white mb-4">New Project</h3>
+          <div className="bg-[#171717] p-6 rounded-xl border border-[#262626]">
+            <h3 className="font-semibold text-lg text-[#f5f5f5] mb-4">New Project</h3>
             <div className="space-y-4">
               <Input 
                 label="Project Name" 
-                placeholder="e.g. My Next Hit Song"
+                placeholder="e.g. My Next Release"
                 value={newProject.name} 
                 onChange={e => setNewProject({...newProject, name: e.target.value})} 
               />
               <div className="space-y-1">
-                <label className="text-sm text-gray-400 font-medium">Type</label>
+                <label className="text-sm text-[#a3a3a3] font-medium">Type</label>
                 <select 
-                  className="w-full h-10 rounded-md border border-gray-700 bg-gray-900 px-3 text-sm text-gray-100 outline-none focus:ring-2 focus:ring-blue-600"
+                  className="w-full h-10 rounded-md border border-[#262626] bg-[#0a0a0a] px-3 text-sm text-[#f5f5f5] outline-none focus:ring-2 focus:ring-[#10b981]"
                   value={newProject.type}
                   onChange={e => setNewProject({...newProject, type: e.target.value as Project['type']})}
                 >
@@ -84,7 +84,7 @@ export function ReleasePlanner() {
 
         <div className="lg:col-span-2 space-y-6">
           {state.projects.length === 0 ? (
-            <div className="h-64 flex items-center justify-center bg-gray-900/50 rounded-xl border border-dashed border-gray-800 text-gray-500">
+            <div className="h-64 flex items-center justify-center bg-[#171717] rounded-xl border border-dashed border-[#262626] text-[#525252]">
                No active projects. Start planning your next release.
             </div>
           ) : (
@@ -94,21 +94,21 @@ export function ReleasePlanner() {
                 const daysLeft = differenceInDays(parseISO(project.releaseDate), new Date());
                 
                 return (
-                  <div key={project.id} className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-                    <div className="p-4 bg-gray-800/30 border-b border-gray-800 flex justify-between items-center">
+                  <div key={project.id} className="bg-[#171717] border border-[#262626] rounded-xl overflow-hidden">
+                    <div className="p-4 bg-[#0a0a0a] border-b border-[#262626] flex justify-between items-center">
                       <div className="flex items-center gap-3">
-                         <div className={`w-2 h-12 rounded-full ${daysLeft < 0 ? 'bg-red-500' : daysLeft < 7 ? 'bg-orange-500' : 'bg-green-500'}`}></div>
+                         <div className={`w-2 h-12 rounded-full ${daysLeft < 0 ? 'bg-red-500' : daysLeft < 7 ? 'bg-[#d97706]' : 'bg-[#10b981]'}`}></div>
                          <div>
-                           <h3 className="font-bold text-white text-lg">{project.name}</h3>
-                           <p className="text-xs text-gray-400 uppercase tracking-wider">{project.type} • Release: {project.releaseDate}</p>
+                           <h3 className="font-bold text-[#f5f5f5] text-lg">{project.name}</h3>
+                           <p className="text-xs text-[#525252] uppercase tracking-wider">{project.type} • Release: {project.releaseDate}</p>
                          </div>
                       </div>
                       <div className="flex items-center gap-4">
                          <div className="text-right">
-                           <span className="block text-2xl font-bold text-white">{daysLeft}</span>
-                           <span className="text-xs text-gray-500">DAYS LEFT</span>
+                           <span className="block text-2xl font-bold text-[#f5f5f5]">{daysLeft}</span>
+                           <span className="text-xs text-[#525252]">DAYS LEFT</span>
                          </div>
-                         <button onClick={() => deleteProject(project.id)} className="p-2 text-gray-600 hover:text-red-500 transition-colors">
+                         <button onClick={() => deleteProject(project.id)} className="p-2 text-[#525252] hover:text-red-500 transition-colors">
                            <Trash2 size={18} />
                          </button>
                       </div>
@@ -116,12 +116,12 @@ export function ReleasePlanner() {
                     
                     <div className="p-4 grid grid-cols-1 md:grid-cols-4 gap-4">
                       {deadlines.map((task, idx) => (
-                        <div key={idx} className="bg-black/20 p-3 rounded border border-gray-800/50">
+                        <div key={idx} className="bg-[#0a0a0a] p-3 rounded border border-[#262626]">
                           <div className="flex items-center gap-2 mb-1">
-                            <CalendarIcon size={12} className="text-gray-500" />
-                            <span className="text-xs text-gray-400">{format(task.date, 'MMM d')}</span>
+                            <CalendarIcon size={12} className="text-[#525252]" />
+                            <span className="text-xs text-[#525252]">{format(task.date, 'MMM d')}</span>
                           </div>
-                          <p className="text-sm font-medium text-gray-200">{task.label}</p>
+                          <p className="text-sm font-medium text-[#a3a3a3]">{task.label}</p>
                         </div>
                       ))}
                     </div>

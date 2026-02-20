@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { Button } from '../components/ui/Button';
-import { Download, Upload, Trash2, Shield, X } from 'lucide-react';
+import { Download, Upload, Trash2, Shield, X, ExternalLink } from 'lucide-react';
 import { Input } from '../components/ui/Input';
 import { isProEnabled, disablePro } from '../utils/pro';
 
@@ -74,23 +74,46 @@ export function Settings() {
           <p className="text-[#a3a3a3] mt-1 text-sm">
             {proEnabled 
               ? "Pro mode is enabled on this device." 
-              : "Free mode. Visit /owner to unlock Pro."}
+              : "Free mode."}
           </p>
-          {proEnabled && (
-            <button
-              onClick={handleDisablePro}
-              className="mt-4 text-sm text-red-500 hover:text-red-400 transition-colors flex items-center gap-1"
+          
+          {!proEnabled && (
+            <a 
+              href={import.meta.env.VITE_STRIPE_CHECKOUT_URL || '#'}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-[#10b981] text-[#022c22] rounded font-medium hover:bg-[#059669] transition-colors"
             >
-              <X size={14} />
-              Disable Pro on this device
-            </button>
+              Upgrade Now <ExternalLink size={14} />
+            </a>
           )}
+          
+          {proEnabled && (
+            <>
+              <a 
+                href={import.meta.env.VITE_STRIPE_BILLING_URL || '#'}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-4 mr-4 inline-flex items-center gap-2 text-sm text-[#10b981] hover:text-[#059669] transition-colors"
+              >
+                Manage billing <ExternalLink size={14} />
+              </a>
+              <button
+                onClick={handleDisablePro}
+                className="mt-4 text-sm text-red-500 hover:text-red-400 transition-colors inline-flex items-center gap-1"
+              >
+                <X size={14} />
+                Disable Pro
+              </button>
+            </>
+          )}
+          
           {!proEnabled && (
             <Link
               to="/owner"
-              className="mt-4 inline-block text-sm text-[#d97706] hover:text-[#b45309] transition-colors"
+              className="mt-4 ml-4 inline-block text-sm text-[#d97706] hover:text-[#b45309] transition-colors"
             >
-              Unlock Pro →
+              Or unlock with owner key →
             </Link>
           )}
         </div>

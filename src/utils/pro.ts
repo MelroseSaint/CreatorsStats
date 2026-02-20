@@ -43,7 +43,7 @@ export function setSubscriptionStatus(status: SubscriptionStatus): void {
 export function isProEligible(): boolean {
   const status = getSubscriptionStatus();
   if (!status) return false;
-  return status.status === 'ACTIVE' || status.status === 'TRIALING';
+  return status.status === 'ACTIVE' || status.status === 'TRIALING' || status.status === 'OWNER';
 }
 
 export function clearSubscription(): void {
@@ -174,5 +174,38 @@ export function openStripePortal(): void {
   const url = import.meta.env.VITE_STRIPE_PORTAL_LOGIN_URL;
   if (url) {
     window.open(url, '_blank');
+  }
+}
+
+export async function unlockWithOwnerKey(key: string): Promise<{ success: boolean; error?: string }> {
+  if (key !== 'growthmelrose') {
+    return { success: false, error: 'Invalid key' };
+  }
+
+  const deviceId = getDeviceId();
+
+  try {
+    const response = await fetch('/api/owner/unlock', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key, deviceId }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      return { success: false, error: data.error || 'Unlock failed' };
+    }
+
+    const data = await response.json();
+    setProToken(data.token);
+    setSubscriptionStatus({
+      status: 'OWNER',
+      customerId: 'owner',
+      subscriptionId: 'owner',
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Owner unlock error:', error);
+    return { success: false, error: 'Network error' };
   }
 }

@@ -91,7 +91,15 @@ export default async function handler(req, res) {
       }
     }
 
-    // For non-Stripe subscriptions (if any), just validate JWT
+    // Owner subscription - just validate JWT (no Stripe check needed)
+    if (decoded.sub === 'owner') {
+      return res.status(200).json({
+        valid: true,
+        status: 'OWNER',
+      });
+    }
+
+    // For other subscriptions, just validate JWT
     return res.status(200).json({ 
       valid: true, 
       status: 'ACTIVE',

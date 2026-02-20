@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { StoreProvider } from './context/StoreContext';
 import { Layout } from './components/Layout';
-import { Owner } from './pages/Owner';
 import { Dashboard } from './pages/Dashboard';
 import { SponsorshipCalculator } from './pages/SponsorshipCalculator';
 import { RevenueProjection } from './pages/RevenueProjection';
@@ -14,7 +13,6 @@ function App() {
     <StoreProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/owner" element={<Owner />} />
           <Route path="/" element={<Navigate to="/app" replace />} />
           <Route path="/app" element={<Layout />}>
             <Route index element={<Dashboard />} />

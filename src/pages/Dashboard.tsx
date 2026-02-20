@@ -1,22 +1,44 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { formatCurrency } from '../utils';
 import { TrendingUp, Users, Calendar, DollarSign, Plus } from 'lucide-react';
-import { verifyToken } from '../utils/pro';
+import { verifyAndRefreshStatus, isProEligible, getSubscriptionStatus } from '../utils/pro';
+import type { SubscriptionStatus } from '../utils/pro';
+
+const REFRESH_INTERVAL = 10 * 60 * 1000; // 10 minutes
 
 export function Dashboard() {
   const { state } = useStore();
-  const [proEnabled, setProEnabled] = useState(false);
+  const [subStatus, setSubStatus] = useState<SubscriptionStatus | null>(null);
   const [loading, setLoading] = useState(true);
+  const intervalRef = useRef<number | null>(null);
+
+  const checkProStatus = async () => {
+    const result = await verifyAndRefreshStatus();
+    const isPro = result.valid && isProEligible();
+    setSubStatus(result.status || null);
+    setLoading(false);
+    return isPro;
+  };
 
   useEffect(() => {
-    const checkPro = async () => {
-      const isPro = await verifyToken();
-      setProEnabled(isPro);
-      setLoading(false);
+    checkProStatus();
+    
+    intervalRef.current = window.setInterval(checkProStatus, REFRESH_INTERVAL);
+    
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
-    checkPro();
+  }, []);
+
+  useEffect(() => {
+    const storedStatus = getSubscriptionStatus();
+    if (storedStatus) {
+      setSubStatus(storedStatus);
+    }
   }, []);
   
   const latestMetric = state.metrics[state.metrics.length - 1];
@@ -40,9 +62,14 @@ export function Dashboard() {
         <p className="text-[#8A9099] mt-2">Welcome back, {state.user.name}.</p>
       </div>
 
-      {proEnabled && (
-        <div className="bg-[#169A76]/10 border border-[#169A76]/20 rounded-lg px-4 py-2 text-sm text-[#169A76]">
-          Pro mode enabled
+      {subStatus && (
+        <div className={`px-4 py-2 rounded-lg text-sm ${
+          subStatus.status === 'ACTIVE' || subStatus.status === 'TRIALING'
+            ? 'bg-[#169A76]/10 border border-[#169A76]/20 text-[#169A76]'
+            : 'bg-red-500/10 border border-red-500/20 text-red-500'
+        }`}>
+          Subscription: {subStatus.status}
+          {subStatus.cancelAtPeriodEnd && ' (Cancels at period end)'}
         </div>
       )}
 

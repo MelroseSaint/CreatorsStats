@@ -1,7 +1,14 @@
-const PRO_KEY = 'pro_enabled';
 const PRO_TOKEN_KEY = 'pro_token';
 const DEVICE_ID_KEY = 'device_id';
-const PRO_SOURCE_KEY = 'pro_source';
+const SUBSCRIPTION_STATUS_KEY = 'subscription_status';
+
+export interface SubscriptionStatus {
+  status: string;
+  currentPeriodEnd?: number;
+  cancelAtPeriodEnd?: boolean;
+  customerId?: string;
+  subscriptionId?: string;
+}
 
 function getOrCreateDeviceId(): string {
   let deviceId = localStorage.getItem(DEVICE_ID_KEY);
@@ -16,45 +23,72 @@ export function getDeviceId(): string {
   return getOrCreateDeviceId();
 }
 
-export function isProEnabled(): boolean {
-  return localStorage.getItem(PRO_KEY) === 'true';
-}
-
-export function getProSource(): string | null {
-  return localStorage.getItem(PRO_SOURCE_KEY);
-}
-
 export function getProToken(): string | null {
   return localStorage.getItem(PRO_TOKEN_KEY);
 }
 
 export function setProToken(token: string): void {
   localStorage.setItem(PRO_TOKEN_KEY, token);
-  localStorage.setItem(PRO_KEY, 'true');
 }
 
-export function enablePro(source: 'owner' | 'stripe'): void {
-  localStorage.setItem(PRO_KEY, 'true');
-  localStorage.setItem(PRO_SOURCE_KEY, source);
+export function getSubscriptionStatus(): SubscriptionStatus | null {
+  const status = localStorage.getItem(SUBSCRIPTION_STATUS_KEY);
+  return status ? JSON.parse(status) : null;
 }
 
-export function disablePro(): void {
-  localStorage.removeItem(PRO_KEY);
+export function setSubscriptionStatus(status: SubscriptionStatus): void {
+  localStorage.setItem(SUBSCRIPTION_STATUS_KEY, JSON.stringify(status));
+}
+
+export function isProEligible(): boolean {
+  const status = getSubscriptionStatus();
+  if (!status) return false;
+  return status.status === 'ACTIVE' || status.status === 'TRIALING';
+}
+
+export function clearSubscription(): void {
   localStorage.removeItem(PRO_TOKEN_KEY);
-  localStorage.removeItem(PRO_SOURCE_KEY);
+  localStorage.removeItem(SUBSCRIPTION_STATUS_KEY);
 }
 
-export function verifyOwnerKey(key: string): boolean {
-  return key === 'growthmelrose';
+export async function activateWithSessionId(sessionId: string): Promise<{ success: boolean; error?: string }> {
+  const deviceId = getDeviceId();
+
+  try {
+    const response = await fetch('/api/stripe/activate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, deviceId }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      return { success: false, error: data.error || 'Activation failed' };
+    }
+
+    const data = await response.json();
+    setProToken(data.token);
+    setSubscriptionStatus({
+      status: data.status,
+      customerId: data.customerId,
+      subscriptionId: data.subscriptionId,
+      currentPeriodEnd: data.currentPeriodEnd,
+      cancelAtPeriodEnd: data.cancelAtPeriodEnd,
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Activation error:', error);
+    return { success: false, error: 'Network error' };
+  }
 }
 
-export async function verifyToken(): Promise<boolean> {
+export async function verifyAndRefreshStatus(): Promise<{ valid: boolean; status?: SubscriptionStatus }> {
   const token = getProToken();
   const deviceId = getDeviceId();
-  
+
   if (!token) {
-    disablePro();
-    return false;
+    clearSubscription();
+    return { valid: false };
   }
 
   try {
@@ -67,81 +101,78 @@ export async function verifyToken(): Promise<boolean> {
     });
 
     if (!response.ok) {
-      disablePro();
-      return false;
+      clearSubscription();
+      return { valid: false };
     }
 
     const data = await response.json();
-    return data.valid === true;
+
+    if (!data.valid) {
+      clearSubscription();
+      return { valid: false };
+    }
+
+    const status: SubscriptionStatus = {
+      status: data.status,
+      customerId: data.customerId,
+      subscriptionId: data.subscriptionId,
+      currentPeriodEnd: data.currentPeriodEnd,
+      cancelAtPeriodEnd: data.cancelAtPeriodEnd,
+    };
+
+    setSubscriptionStatus(status);
+
+    if (data.renewedToken) {
+      setProToken(data.renewedToken);
+    }
+
+    return { valid: true, status };
   } catch (error) {
-    console.error('Token verification failed:', error);
-    disablePro();
-    return false;
+    console.error('Verification error:', error);
+    clearSubscription();
+    return { valid: false };
   }
 }
 
-export async function unlockWithOwnerKey(key: string): Promise<{ success: boolean; error?: string }> {
-  // Direct unlock if key matches (for demo/testing)
-  if (key === 'growthmelrose') {
-    const tokenData = JSON.stringify({ pro: true, sub: 'owner', deviceId: getDeviceId(), exp: Date.now() + 7*24*60*60*1000 });
-    try {
-      const fakeToken = btoa(tokenData);
-      setProToken(fakeToken);
-      enablePro('owner');
-      return { success: true };
-    } catch (e) {
-      console.error('btoa error:', e);
-      const fakeToken = btoa(encodeURIComponent(tokenData));
-      setProToken(fakeToken);
-      enablePro('owner');
-      return { success: true };
-    }
-  }
-
-  // Otherwise try serverless verification
+export async function getDetailedStatus(): Promise<SubscriptionStatus | null> {
+  const token = getProToken();
   const deviceId = getDeviceId();
 
+  if (!token) {
+    return null;
+  }
+
   try {
-    const response = await fetch('/api/owner/unlock', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key, deviceId }),
+    const response = await fetch('/api/subscription/status', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'X-Device-Id': deviceId,
+      },
     });
 
     if (!response.ok) {
-      const data = await response.json();
-      return { success: false, error: data.error || 'Unlock failed' };
+      return null;
     }
 
     const data = await response.json();
-    setProToken(data.token);
-    enablePro('owner');
-    return { success: true };
+    return data;
   } catch (error) {
-    return { success: false, error: 'Network error' };
+    console.error('Status fetch error:', error);
+    return null;
   }
 }
 
-export async function verifyStripeSubscriber(email: string): Promise<{ success: boolean; error?: string }> {
-  const deviceId = getDeviceId();
+export function openStripePaymentLink(): void {
+  const url = import.meta.env.VITE_STRIPE_PAYMENT_LINK_URL;
+  if (url) {
+    window.open(url, '_blank');
+  }
+}
 
-  try {
-    const response = await fetch('/api/stripe/verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, deviceId }),
-    });
-
-    if (!response.ok) {
-      const data = await response.json();
-      return { success: false, error: data.error || 'Verification failed' };
-    }
-
-    const data = await response.json();
-    setProToken(data.token);
-    enablePro('stripe');
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: 'Network error' };
+export function openStripePortal(): void {
+  const url = import.meta.env.VITE_STRIPE_PORTAL_LOGIN_URL;
+  if (url) {
+    window.open(url, '_blank');
   }
 }

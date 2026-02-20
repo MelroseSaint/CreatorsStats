@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import Stripe from 'stripe';
 
 export const config = {
   api: {
@@ -6,7 +7,18 @@ export const config = {
   },
 };
 
-export default function handler(req, res) {
+const ELIGIBLE_STATUSES = ['active', 'trialing'];
+
+async function getSubscriptionStatus(stripe: Stripe, subscriptionId: string) {
+  const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any;
+  return {
+    status: subscription.status.toUpperCase(),
+    currentPeriodEnd: subscription.current_period_end * 1000,
+    cancelAtPeriodEnd: subscription.cancel_at_period_end,
+  };
+}
+
+export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -33,16 +45,56 @@ export default function handler(req, res) {
       return res.status(401).json({ error: 'Device mismatch', valid: false });
     }
 
-    // Check expiry is still valid (jwt.verify handles this but let's be explicit)
-    if (decoded.exp && Date.now() >= decoded.exp * 1000) {
-      return res.status(401).json({ error: 'Token expired', valid: false });
+    // Check if Stripe subscription - verify with Stripe
+    if (decoded.sub === 'stripe' && decoded.subscriptionId) {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
+      
+      try {
+        const subStatus = await getSubscriptionStatus(stripe, decoded.subscriptionId);
+        
+        const isEligible = ELIGIBLE_STATUSES.includes(subStatus.status.toLowerCase());
+
+        if (!isEligible) {
+          return res.status(401).json({ 
+            valid: false, 
+            status: subStatus.status,
+            error: 'Subscription not active',
+          });
+        }
+
+        // Issue refreshed token
+        const renewedToken = jwt.sign(
+          {
+            pro: true,
+            sub: 'stripe',
+            customerId: decoded.customerId,
+            subscriptionId: decoded.subscriptionId,
+            deviceId: decoded.deviceId,
+            status: subStatus.status,
+          },
+          secret,
+          { expiresIn: '24h' }
+        );
+
+        return res.status(200).json({
+          valid: true,
+          status: subStatus.status,
+          currentPeriodEnd: subStatus.currentPeriodEnd,
+          cancelAtPeriodEnd: subStatus.cancelAtPeriodEnd,
+          customerId: decoded.customerId,
+          subscriptionId: decoded.subscriptionId,
+          renewedToken,
+        });
+      } catch (stripeError) {
+        console.error('Stripe verification error:', stripeError);
+        return res.status(401).json({ valid: false, error: 'Subscription check failed' });
+      }
     }
 
+    // For non-Stripe subscriptions (if any), just validate JWT
     return res.status(200).json({ 
       valid: true, 
-      pro: decoded.pro,
-      sub: decoded.sub,
-      email: decoded.email 
+      status: 'ACTIVE',
     });
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {

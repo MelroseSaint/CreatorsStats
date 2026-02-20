@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, Calculator, TrendingUp, Calendar, Target, Settings } from 'lucide-react';
 import { cn } from '../utils';
-import { isProEnabled } from '../utils/pro';
+import { isProEligible } from '../utils/pro';
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', to: '/app' },
@@ -13,7 +13,7 @@ const navItems = [
 ];
 
 export function Sidebar() {
-  const proEnabled = isProEnabled();
+  const proEnabled = isProEligible();
 
   return (
     <aside className="w-64 bg-[#0B0C10] border-r border-[#1F222A] flex flex-col h-screen fixed left-0 top-0">

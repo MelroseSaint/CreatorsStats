@@ -19,7 +19,18 @@ export function Sidebar() {
     <aside className="w-64 bg-[#0B0C10] border-r border-[#1F222A] flex flex-col h-screen fixed left-0 top-0">
       <div className="p-6">
         <h1 className="text-xl font-bold text-[#F3F4F6] tracking-tight flex items-center gap-2">
-          <span className="w-8 h-8 bg-[#169A76] rounded-lg flex items-center justify-center text-[#0B0C10] font-mono font-bold">G</span>
+          <span className="w-8 h-8 inline-flex">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+              <rect width="48" height="48" rx="12" fill="#14161C" />
+              <path
+                d="M28 14 C20 14 16 19 16 24 C16 29 20 34 28 34 C32 34 36 31 36 27 H28"
+                stroke="#169A76"
+                strokeWidth="3.5"
+                fill="none"
+              />
+              <line x1="36" y1="14" x2="36" y2="34" stroke="#B8952E" strokeWidth="3.5" />
+            </svg>
+          </span>
           GrowthLedger
         </h1>
       </div>

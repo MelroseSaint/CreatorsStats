@@ -96,7 +96,7 @@ export function Pricing() {
               </ul>
 
               <a 
-                href="https://buy.stripe.com/test_placeholder" 
+                href={import.meta.env.VITE_STRIPE_CHECKOUT_URL || '#'} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="block w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium text-center transition-colors flex items-center justify-center gap-2"

@@ -130,6 +130,16 @@ export function Settings() {
             <Shield size={18} className={isPro ? "text-[#169A76]" : "text-[#5F646C]"} />
             Subscription Status
           </h3>
+
+          <div className="mt-2 flex items-center gap-2">
+            <span className="text-[10px] uppercase tracking-widest text-[#D4B65A]">Owner</span>
+            <Link
+              to="/owner"
+              className="text-sm text-[#B8952E] hover:text-[#A88427] transition-colors"
+            >
+              Enter owner key
+            </Link>
+          </div>
           
           {activating && (
             <div className="mt-4 flex items-center gap-2 text-[#169A76]">

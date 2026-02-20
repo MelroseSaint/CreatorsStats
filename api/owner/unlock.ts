@@ -20,17 +20,15 @@ export default function handler(req, res) {
       return res.status(400).json({ error: 'Missing key or deviceId' });
     }
 
-    // Simple key check - in production you'd want more secure validation
     if (key !== 'growthmelrose') {
       return res.status(401).json({ error: 'Invalid key' });
     }
 
-    // Issue JWT for owner access
     const secret = process.env.JWT_SECRET || 'fallback-secret-change-me';
     const token = jwt.sign(
-      { 
-        pro: true, 
-        sub: 'owner', 
+      {
+        pro: true,
+        sub: 'owner',
         deviceId,
         status: 'OWNER',
       },

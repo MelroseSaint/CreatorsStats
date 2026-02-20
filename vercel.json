@@ -13,7 +13,8 @@
     { "source": "/owner", "destination": "/" }
   ],
   "functions": {
-    "api/**/*.ts": {},
-    "api/**/*.js": {}
+    "api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
   }
 }
